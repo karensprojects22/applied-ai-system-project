@@ -19,7 +19,7 @@ flowchart TD
     HUMAN --> OUT
     SCORE --> LOG[("logs/agent_log.jsonl")]
     subgraph TESTING["Reliability testing"]
-        SCEN["scenarios.py<br/>13 scenarios"] --> EVAL["evaluate.py and pytest<br/>88 tests"]
+        SCEN["scenarios.py<br/>13 scenarios"] --> EVAL["evaluate.py and pytest<br/>90 tests"]
     end
     EVAL -. runs the whole pipeline .-> OWNER
     EVAL --> REPORT["Pass or fail report<br/>reviewed by the developer"]

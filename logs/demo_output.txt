@@ -1,0 +1,105 @@
+Explanation model: none (offline template)
+
+========================================================================
+1. Normal day (Karen's demo data)
+========================================================================
+
+Agent trace:
+  check_inputs  0 finding(s)
+  plan          attempt 1, strategy=priority, 7 scheduled, 0 skipped
+  verify        6/6 checks passed
+  retrieve      7 grounded, 0 abstained, 1 care gap(s)
+  explain       source=template
+  score         confidence=0.94 (High); human review not needed
+
+Final schedule:
+  07:00-07:05  Refill water bowl      [Biscuit]
+  07:30-08:00  Morning walk           [Biscuit]
+  08:00-08:05  Thyroid medication     [Mochi]
+  12:30-12:45  Feather wand play      [Mochi]
+  12:45-13:05  Training session       [Biscuit]
+  18:00-18:05  Flea treatment         [Biscuit]
+  18:05-18:25  Brush coat             [Biscuit]
+
+Explanation (template):
+  Plan for Wednesday, November 18: 7 of 7 due tasks scheduled (100 of 120 min).
+  Biscuit, Refill water bowl: Clean, fresh water should be refilled at least once a day, and more often in hot weather. Wash water bowls regularly, since a dirty bowl grows bacteria. [feeding_hydration.md#Water]
+  Biscuit, Morning walk: Most adult dogs need at least 30 minutes of walking or active exercise every day, and many active breeds such as retrievers, collies and huskies need 60 minutes or more. [dog_care.md#Daily walks and exercise]
+  Mochi, Thyroid medication: Medication should be given at the same time each day and never skipped or doubled up without veterinary advice. [medication.md#Giving medication on schedule]
+  Mochi, Feather wand play: Indoor cats need daily interactive play, ideally two sessions of 10 to 15 minutes, using wand toys or other toys that mimic prey. [cat_care.md#Play and enrichment for cats]
+  Mochi has 0 min of feeding today; the guidance suggests at least 10 min [cat_care.md#Feeding cats].
+
+Confidence: 0.94 (High)  <- verification 1.00, retrieval 0.81, completeness 1.00, grounding 1.00
+Human review: not needed
+
+========================================================================
+2. Crowded day: medication would be dropped
+========================================================================
+
+Agent trace:
+  check_inputs  0 finding(s)
+  plan          attempt 1, strategy=priority, 2 scheduled, 1 skipped
+  verify        5/6 checks passed; failed: critical_tasks_scheduled
+  critique      critical task skipped (Thyroid medication); switching to critical_first
+  plan          attempt 2, strategy=critical_first, 2 scheduled, 1 skipped
+  verify        6/6 checks passed
+  retrieve      2 grounded, 0 abstained, 5 care gap(s)
+  explain       source=template
+  score         confidence=0.92 (High); human review not needed
+
+Final schedule:
+  07:00-07:05  Thyroid medication     [Mochi]
+  07:05-07:15  Training session       [Biscuit]
+  SKIPPED  Morning walk: Needs 30 min but only 25 min of the daily budget was left
+
+Explanation (template):
+  Plan for Wednesday, November 18: 2 of 3 due tasks scheduled (15 of 40 min).
+  The planner revised its first draft: Thyroid medication was dropped in the first draft, so critical tasks were placed before everything else.
+  Not scheduled: Morning walk - Needs 30 min but only 25 min of the daily budget was left.
+  Mochi, Thyroid medication: Medication should be given at the same time each day and never skipped or doubled up without veterinary advice. [medication.md#Giving medication on schedule]
+  Biscuit, Training session: Short training sessions of 5 to 15 minutes, once or twice a day, work better than one long session. [dog_care.md#Training and play]
+  Biscuit has 0 min of walk today; the guidance suggests at least 30 min [dog_care.md#Daily walks and exercise].
+  Biscuit has 0 min of feeding today; the guidance suggests at least 10 min [dog_care.md#Feeding adult dogs].
+  Biscuit has 10 min of enrichment today; the guidance suggests at least 15 min [dog_care.md#Training and play].
+  Mochi has 0 min of feeding today; the guidance suggests at least 10 min [cat_care.md#Feeding cats].
+  Mochi has 0 min of enrichment today; the guidance suggests at least 15 min [cat_care.md#Play and enrichment for cats].
+
+Confidence: 0.92 (High)  <- verification 1.00, retrieval 0.95, completeness 0.67, grounding 1.00
+Human review: not needed
+
+========================================================================
+3. Impossible day: medication cannot fit
+========================================================================
+
+Agent trace:
+  check_inputs  0 finding(s)
+  plan          attempt 1, strategy=priority, 0 scheduled, 1 skipped
+  verify        5/6 checks passed; failed: critical_tasks_scheduled
+  critique      critical task skipped (Thyroid medication); switching to critical_first
+  plan          attempt 2, strategy=critical_first, 0 scheduled, 1 skipped
+  verify        5/6 checks passed; failed: critical_tasks_scheduled
+  critique      no automatic fix available; escalating to a person
+  retrieve      0 grounded, 0 abstained, 5 care gap(s)
+  explain       source=template
+  score         confidence=0.40 (Low); human review REQUIRED
+
+Final schedule:
+  SKIPPED  Thyroid medication: Needs 5 min but only 3 min of the daily budget was left
+
+Explanation (template):
+  Plan for Wednesday, November 18: 0 of 1 due tasks scheduled (0 of 3 min).
+  The planner revised its first draft: placing critical tasks first did not help: Thyroid medication still cannot fit.
+  Not scheduled: Thyroid medication - Needs 5 min but only 3 min of the daily budget was left.
+  Biscuit has 0 min of walk today; the guidance suggests at least 30 min [dog_care.md#Daily walks and exercise].
+  Biscuit has 0 min of feeding today; the guidance suggests at least 10 min [dog_care.md#Feeding adult dogs].
+  Biscuit has 0 min of enrichment today; the guidance suggests at least 15 min [dog_care.md#Training and play].
+  Mochi has 0 min of feeding today; the guidance suggests at least 10 min [cat_care.md#Feeding cats].
+  Mochi has 0 min of enrichment today; the guidance suggests at least 15 min [cat_care.md#Play and enrichment for cats].
+
+Flags:
+  [critical] Thyroid medication cannot fit even when placed first. Increase the time budget or decide what to drop.
+
+Confidence: 0.40 (Low)  <- verification 0.83, retrieval 1.00, completeness 0.00, grounding 1.00
+HUMAN REVIEW REQUIRED:
+  - critical task not scheduled: Thyroid medication
+  - confidence 0.40 is below 0.6

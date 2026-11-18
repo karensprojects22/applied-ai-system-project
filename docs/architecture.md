@@ -24,7 +24,7 @@ flowchart TD
     HUMAN --> OUT
     SCORE --> LOG[("logs/agent_log.jsonl")]
     subgraph TESTING["Reliability testing"]
-        SCEN["scenarios.py<br/>13 scenarios"] --> EVAL["evaluate.py and pytest<br/>88 tests"]
+        SCEN["scenarios.py<br/>13 scenarios"] --> EVAL["evaluate.py and pytest<br/>90 tests"]
     end
     EVAL -. runs the whole pipeline .-> OWNER
     EVAL --> REPORT["Pass or fail report<br/>reviewed by the developer"]
@@ -34,7 +34,7 @@ flowchart TD
 
 - **Data flow:** owner input goes through input guardrails, the planner, and verification. Retrieval feeds the advisor, then an explanation is written and checked before it reaches the user.
 - **Where a person is involved:** the HUMAN IN THE LOOP node. The agent sends a plan there when a critical task cannot be scheduled, or when a hazard or injection is flagged, or when confidence is below 0.6.
-- **Where testing is involved:** the Reliability testing box runs the whole pipeline on 13 scenarios and 88 tests, and produces a report that the developer reviews.
+- **Where testing is involved:** the Reliability testing box runs the whole pipeline on 13 scenarios and 90 tests, and produces a report that the developer reviews.
 
 ## Where each key term lives
 

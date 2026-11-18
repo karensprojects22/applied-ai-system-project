@@ -1,0 +1,13 @@
+INPUT  budget: 40 min
+INPUT  Biscuit  Morning walk         walk        30 min  HIGH
+INPUT  Biscuit  Training session     enrichment  10 min  HIGH
+INPUT  Mochi    Thyroid medication   meds         5 min  MEDIUM
+
+OUTPUT schedule:
+  07:00-07:05  Thyroid medication
+  07:05-07:15  Training session
+  skipped: Morning walk (Needs 30 min but only 25 min of the daily budget was left)
+OUTPUT revisions        : ['Thyroid medication was dropped in the first draft, so critical tasks were placed before everything else']
+OUTPUT checks passed    : 6/6
+OUTPUT confidence       : 0.92 (High)
+OUTPUT human review     : False

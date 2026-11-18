@@ -20,7 +20,7 @@
 
 **Knowledge base.** Written for this project as general guidance (exercise, feeding, medication handling, grooming, enrichment, toxic foods). **It has not been reviewed by a veterinarian.**
 
-**Evaluation.** 13 scripted scenarios (46 expectations) and 88 pytest cases, all passing. These test cases I thought of, so they say little about cases I did not. Full table: see [README.md](README.md#testing-summary).
+**Evaluation.** 13 scripted scenarios (46 expectations) and 90 pytest cases, all passing. These test cases I thought of, so they say little about cases I did not. Full table: see [README.md](README.md#testing-summary).
 
 ## 2. Limitations and biases
 
